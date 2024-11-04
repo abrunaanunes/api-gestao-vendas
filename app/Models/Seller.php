@@ -9,7 +9,7 @@ class Seller extends Model
 {
     use HasFactory;
 
-    private $fillable = [
+    protected $fillable = [
         'name',
         'email',
     ];
