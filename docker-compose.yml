@@ -1,0 +1,47 @@
+volumes:
+  composer_cache:
+  storage:
+  db_data:
+networks:
+  db-network:
+
+services:
+  application: &app
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+      pull: true
+      args:
+        ENV: production
+    restart: always
+    environment:
+      APP_ENV: production
+      CONTAINER_ROLE: app
+    volumes:
+      - composer_cache:/root/.composer/cache:cached
+      - storage:/var/www/storage
+      - ./docker/scripts/init.sh:/docker-entrypoint-init.d/init.sh
+      - ./docker/config/php.ini:/usr/local/etc/php/php.ini:ro # READONLY
+    command:
+      - /docker-entrypoint-init.d/init.sh
+    # ports:
+    #   - 8000:8000
+    networks:
+      - db-network
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0.19
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "" # !!! MUST override on docker-compose.override.yml !!!
+      MYSQL_DATABASE: "" # !!! MUST override on docker-compose.override.yml !!!
+      MYSQL_USER: "" # !!! MUST override on docker-compose.override.yml !!!
+      MYSQL_PASSWORD: "" # !!! MUST override on docker-compose.override.yml !!!
+    volumes:
+      - db_data:/var/lib/mysql/
+    networks:
+      - db-network
+    # ports:
+    #   - 3306:3306
