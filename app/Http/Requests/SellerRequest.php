@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SellerRequest extends FormRequest
 {
@@ -23,7 +24,12 @@ class SellerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:sellers,email',
+            'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    Rule::unique('sellers')->ignore($this->route('seller')), // Ignora o vendedor atual
+                ],
         ];
     }
 }
