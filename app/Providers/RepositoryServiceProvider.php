@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Interfaces\{
+    SaleRepositoryInterface,
     SellerRepositoryInterface,
 };
 use App\Repositories\{
+    SaleRepository,
     SellerRepository,
 };
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +24,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             SellerRepositoryInterface::class,
             SellerRepository::class,
+        );
+
+        $this->app->bind(
+            SaleRepositoryInterface::class,
+            SaleRepository::class,
         );
     }
 
