@@ -10,7 +10,7 @@ class SaleRepository implements SaleRepositoryInterface
 {
     public function getAllSalesPaginated(): LengthAwarePaginator
     {
-        return Sale::paginate();
+        return Sale::with('seller')->paginate();
     }
 
     public function createSale(array $data): Sale
@@ -20,12 +20,12 @@ class SaleRepository implements SaleRepositoryInterface
 
     public function getSaleById(int $id): Sale
     {
-        return Sale::findOrFail($id);
+        return Sale::with('seller')->findOrFail($id);
     }
 
     public function updateSale(int $id, array $newData): Sale
     {
-        $sale = Sale::findOrFail($id);
+        $sale = Sale::with('seller')->findOrFail($id);
         $sale->update($newData);
         return $sale;
     }

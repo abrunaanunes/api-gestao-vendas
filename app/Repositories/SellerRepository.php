@@ -10,7 +10,7 @@ class SellerRepository implements SellerRepositoryInterface
 {
     public function getAllSellersPaginated(): LengthAwarePaginator
     {
-        return Seller::paginate();
+        return Seller::with('sales')->paginate();
     }
 
     public function createSeller(array $data): Seller
@@ -20,12 +20,12 @@ class SellerRepository implements SellerRepositoryInterface
 
     public function getSellerById(int $id): Seller
     {
-        return Seller::findOrFail($id);
+        return Seller::with('sales')->findOrFail($id);
     }
 
     public function updateSeller(int $id, array $newData): Seller
     {
-        $seller = Seller::findOrFail($id);
+        $seller = Seller::with('sales')->findOrFail($id);
         $seller->update($newData);
         return $seller;
     }

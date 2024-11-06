@@ -17,6 +17,7 @@ class SaleResource extends JsonResource
         return [
             'id' => $this->id,
             'seller_id' => $this->seller_id,
+            'seller' => new SellerResource($this->whenLoaded('seller')),
             'sold_at' => $this->sold_at,
             'value' => $this->value,
         ];
