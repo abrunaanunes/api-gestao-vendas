@@ -12,10 +12,12 @@ class ManagerSummaryMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $totalSales;
     public $totalSalesValue;
 
-    public function __construct($totalSalesValue)
+    public function __construct($totalSales, $totalSalesValue)
     {
+        $this->totalSales = $totalSales;
         $this->totalSalesValue = $totalSalesValue;
     }
 
@@ -31,6 +33,7 @@ class ManagerSummaryMail extends Mailable
         return new Content(
             view: 'emails.manager_sales_summary',
             with: [
+                'totalSales' => $this->totalSales,
                 'totalSalesValue' => $this->totalSalesValue,
             ],
         );

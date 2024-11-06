@@ -20,6 +20,8 @@ class SendManagerSummaryEmailJob
         $this->totalSales = $totalSales;
         $this->totalValue = $totalValue;
         $this->managerEmail = $managerEmail;
+
+        $this->onQueue('managers');
     }
 
     public function handle()

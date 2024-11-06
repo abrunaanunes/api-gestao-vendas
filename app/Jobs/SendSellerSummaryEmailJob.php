@@ -22,6 +22,8 @@ class SendSellerSummaryEmailJob
         $this->totalValue = $totalValue;
         $this->totalCommission = $totalCommission;
         $this->sellerEmail = $sellerEmail;
+
+        $this->onQueue('sellers');
     }
 
     public function handle()

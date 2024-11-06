@@ -19,7 +19,7 @@ class SaleFactory extends Factory
     {
         return [
             'seller_id' => Seller::firstOrCreate([], Seller::factory()->raw())->id,
-            'sold_at' => $this->faker->date(),
+            'sold_at' => $this->faker->dateTimeBetween('-1 days', 'now'),
             'value' => $this->faker->numberBetween(100, 5000),
         ];
     }

@@ -26,7 +26,7 @@ class Seller extends Model
 
     public function calculateDailyCommission()
     {
-        return $this->calculateTotalSalesValue() * 0.085;
+        return $this->calculateDailyTotalSalesValue() * 0.085;
     }
 
     public function calculateDailyTotalSales()

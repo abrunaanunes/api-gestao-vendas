@@ -23,8 +23,9 @@ then
     php artisan key:generate
 fi
 
-if [ "$env" != "production" ]; then
+if ["$role" = "app"]; then
     php artisan migrate
+    php artisan db:seed DatabaseSeeder
 fi
 
 ### Inicia o serviço baseado na ROLE
@@ -36,8 +37,20 @@ else
     (cd /var/www && php artisan config:clear && php artisan route:clear && php artisan view:clear)
 fi
 
+
 if [ "$role" = "app" ]; then
     exec apache2-foreground
+elif [ "$role" = "queue" ]; then
+    echo "Running the queue..."
+    php /var/www/artisan queue:work --verbose --tries=3 --queue=managers,sellers,default --timeout=90
+elif [ "$role" = "scheduler" ]; then
+    # SIMULA CRON
+    php /var/www/artisan schedule:work
+    # while [ true ]
+    # do
+    #   php /var/www/artisan schedule:run --verbose --no-interaction &
+    #   sleep 60
+    # done
 else
     echo "Could not match the container role \"$role\""
     exit 1
