@@ -18,4 +18,19 @@ class Seller extends Model
     {
         return $this->hasMany(Sale::class);
     }
+
+    public function calculateDailyTotalSalesValue()
+    {
+        return $this->sales()->whereDate('sold_at', today())->sum('value');
+    }
+
+    public function calculateDailyCommission()
+    {
+        return $this->calculateDailyTotalSalesValue() * 0.085;
+    }
+
+    public function calculateDailyTotalSales()
+    {
+        return $this->sales()->whereDate('sold_at', today())->count();
+    }
 }
