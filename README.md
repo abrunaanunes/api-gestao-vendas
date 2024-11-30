@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# API Gestão de Vendas
 
-## About Laravel
+Este projeto tem como objetivo fornecer uma API RESTful para o gerenciamento de pedidos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tecnologias Utilizadas
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **[Docker](https://www.docker.com/)**: Plataforma para desenvolvimento e execução de containers.
+- **[Laravel 11](https://laravel.com/docs/11.x)**: Framework PHP moderno com suporte para PHP 8.2.
+- **[Swagger](https://github.com/darkaonline/l5-swagger)**: Biblioteca para geração de documentação da API, adaptada para Laravel.
+- **[MySQL](https://dev.mysql.com/)**: Sistema de gerenciamento de banco de dados relacional.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Autenticação
 
-## Learning Laravel
+## Rotas
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Configuração do Ambiente para o Projeto API Gestão de Colaboradores
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Pré-requisitos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+A única dependência necessária para rodar o ambiente do projeto é ter o **Docker** instalado em sua máquina e conhecer os comandos básicos do docker-compose para executar um container. Para instalar o Docker, siga as instruções no site oficial: [Instalação do Docker](https://docs.docker.com/get-docker/).
 
-## Laravel Sponsors
+### Passos para Configurar o Ambiente
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone o repositório**:
+   Clone o repositório do projeto usando o comando abaixo e, em seguida, navegue até o repositório do projeto na sua máquina:
+   ```bash
+   git clone <url-do-repositorio>
+   ```
 
-### Premium Partners
+2. **Configure os arquivos**:
+   Crie o arquivo .env com base no .env.example:
+   ```bash
+   cp .env.example .env
+   ```
+   Configure o APP_URL e as credenciais de conexão com o banco de dados (devem ser as mesmas do docker-compose.override.yml) e envio de e-mails (Mailtrap) no arquivo .env.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. **Construir os containers com Docker Compose**:
+   A seguir, execute o comando para construir os containers do ambiente:
+   ```bash
+   docker compose build
+   ```
+   Ou, se quiser construir e iniciar os containers ao mesmo tempo:
+   ```bash
+   docker compose up -d
+   ```
+   O comando irá baixar as imagens necessárias, construir os containers e iniciar a aplicação.
 
-## Contributing
+    Após criar os containers, acesse o container da aplicação por meio do comando `docker compose exec application bash` e execute os comandos `php artisan passport:keys --force` e `php artisan passport:client --password`, após a criação do Client, configure o .env para informar as chaves
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```bash
+    PASSPORT_PASSWORD_CLIENT_ID=
+    PASSPORT_PASSWORD_SECRET=
+    PASSPORT_TOKEN_ENDPOINT=
+    ```
 
-## Code of Conduct
+4. **Verificar se os containers estão rodando**:
+   Para garantir que tudo foi iniciado corretamente, use o comando:
+   ```bash
+   docker compose ps
+   ```
+   Aqui você verá uma lista de todos os containers em execução. Certifique-se de que tanto o container da aplicação, banco de dados e fila estejam ativos.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Tecnologias e Motivações
 
-## Security Vulnerabilities
+# Docker
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Este ambiente Docker é composto por três containers principais para rodar a aplicação Laravel, juntamente com seu banco de dados e um serviço de filas.
 
-## License
+## Serviços
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Aplicação
+
+O container `application` hospeda a aplicação Laravel e é configurado para reiniciar automaticamente. Suas configurações são as seguintes:
+
+- **Volumes**:
+  - `composer_cache`: Cache do Composer para acelerar o processo de instalação de dependências.
+  - `storage`: Armazenamento persistente da aplicação.
+  - `init.sh`: Script de inicialização montado em `/docker-entrypoint-init.d/init.sh`.
+  - `php.ini`: Configuração PHP montada como somente leitura em `/usr/local/etc/php/php.ini`.
+
+- **Rede**: Conectado à rede `db-network`, permitindo comunicação com o container do banco de dados.
+- **Dependências**: Depende do container `db`, garantindo que o banco de dados esteja disponível antes de iniciar a aplicação.
+
+### Banco de Dados
+
+O container `db` executa o MySQL e garante a persistência de dados entre reinicializações. Suas configurações são as seguintes:
+
+- **Volumes**:
+  - `db_data`: Persistência de dados do MySQL em `/var/lib/mysql/`.
+
+- **Rede**: Conectado à rede `db-network`, facilitando a comunicação com o container `application`.
+
+### Fila
+
+O container `queue` é uma extensão do container de aplicação `application`, configurado para operar exclusivamente no processamento de filas. Esse container não reinicia automaticamente e possui as seguintes configurações:
+
+- **Variáveis de Ambiente**:
+  - `APP_ENV`: Configurado como `local` para fins de desenvolvimento.
+  - `CONTAINER_ROLE`: Definido como `queue` para especificar o papel do container.
+  - `DB_USERNAME` e `DB_PASSWORD`: Credenciais para o banco de dados, que devem ser definidas no arquivo `docker-compose.override.yml`.
+
+- **Dependências**: Depende do container `application`.
+
+## Volumes
+
+Os volumes são configurados para persistir dados e otimizar o desempenho:
+
+- `composer_cache`: Cache do Composer para otimizar o tempo de instalação de dependências.
+- `storage`: Armazenamento persistente da aplicação Laravel.
+- `db_data`: Armazenamento de dados do MySQL para persistência.
+
+## Redes
+
+- **db-network**: Rede privada que conecta os containers `application`, `db` e `queue` para comunicação interna segura.
+
+## Laravel
+
+O Laravel utiliza diversos recursos e padrões de projeto:
+
+| Ferramenta           | Descrição                                                                      | Uso                                                                                                                                                                                                       |
+|----------------------|--------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **FormRequest**      | Classe auxiliar para validação de requisições no Laravel                       | Validou campos de entrada com base em regras predefinidas, retornando erros como 422 e 400 conforme os requisitos do sistema.                                                                            |
+| **Middleware**       | Classe para interceptação de requisições                                        | Garantiu que todas as requisições sejam do tipo application/json.                                                                                                                                     |
+| **Resources**        | Classe para formatação e retorno de dados                                       | Garantiu que respostas da API fossem formatadas conforme especificações, como inclusão de IDs em headers em vez do corpo da resposta.                                                                    |
+| **PHPUnit**          | Framework integrado ao Laravel para testes automatizados                       | Facilitou a criação de testes automatizados para assegurar o funcionamento adequado das funcionalidades.                                                                                                 |
+| **Services**         | Classes para lógica de negócios e manipulação de dados                          | Inclui OrderService para gestão de pedidos e ErrorHandler para padronização de erros.                                                                                                                |
+
+## MySQL
+
+## Logs
